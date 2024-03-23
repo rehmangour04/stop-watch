@@ -1,12 +1,18 @@
 /** @format */
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import "./App.css";
 
 const App = () => {
   const [startTime, setStartTime] = useState(null);
   const [now, setNow] = useState(null);
   const intervalRef = useRef(null);
+  const [rendered, setRendered] = useState(false); // Track if the component has rendered
+
+  useEffect(() => {
+    // Set rendered to true when component mounts
+    setRendered(true);
+  }, []);
 
   function handleStart() {
     const currentTime = Date.now();
@@ -40,9 +46,11 @@ const App = () => {
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
   };
 
+  console.log("Component rendered:", rendered); // Log if the component rendered
   return (
     <>
-      <h1>Stop Watch</h1>
+      {/* Render the header only if component has rendered */}
+      {rendered && <h1>Stop Watch</h1>}
       <h2>Time: {formatTime(secondsPassed)}</h2>
       <div className="btn">
         <button onClick={handleStart}>Start</button>
