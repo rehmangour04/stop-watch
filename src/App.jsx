@@ -9,8 +9,9 @@ const App = () => {
   const intervalRef = useRef(null);
 
   function handleStart() {
-    setStartTime(Date.now());
-    setNow(Date.now());
+    const currentTime = Date.now();
+    setStartTime(currentTime);
+    setNow(currentTime);
 
     clearInterval(intervalRef.current);
     intervalRef.current = setInterval(() => {
@@ -33,10 +34,16 @@ const App = () => {
     secondsPassed = (now - startTime) / 1000;
   }
 
+  const formatTime = (timeInSeconds) => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
   return (
     <>
       <h1>Stop Watch</h1>
-      <h2>Time: {secondsPassed.toFixed(3)}</h2>
+      <h2>Time: {formatTime(secondsPassed)}</h2>
       <div className="btn">
         <button onClick={handleStart}>Start</button>
         <button onClick={handleStop}>Stop</button>
